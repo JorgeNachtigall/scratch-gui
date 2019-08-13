@@ -5,10 +5,10 @@ const initialState = false;
 const reducer = function (state, action) {
     if (typeof state === 'undefined') state = initialState;
     switch (action.type) {
-    case BLOCK_DRAG_UPDATE:
-        return action.areBlocksOverGui;
-    default:
-        return state;
+        case BLOCK_DRAG_UPDATE:
+            return action.areBlocksOverGui;
+        default:
+            return state;
     }
 };
 
