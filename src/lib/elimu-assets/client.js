@@ -14,6 +14,7 @@ window.addEventListener("load", () => {
 let eventWrapper = function (eventName) {
     return function () {
         newState(eventName, this);
+        this.runtime.getBlocksXML();
     }
 }
 
