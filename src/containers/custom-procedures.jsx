@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import CustomProceduresComponent from '../components/custom-procedures/custom-procedures.jsx';
 import ScratchBlocks from 'scratch-blocks';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 class CustomProcedures extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         bindAll(this, [
             'handleAddLabel',
@@ -23,18 +23,18 @@ class CustomProcedures extends React.Component {
             warp: false
         };
     }
-    componentWillUnmount () {
+    componentWillUnmount() {
         if (this.workspace) {
             this.workspace.dispose();
         }
     }
-    setBlocks (blocksRef) {
+    setBlocks(blocksRef) {
         if (!blocksRef) return;
         this.blocks = blocksRef;
         const workspaceConfig = defaultsDeep({},
             CustomProcedures.defaultOptions,
             this.props.options,
-            {rtl: this.props.isRtl}
+            { rtl: this.props.isRtl }
         );
 
         // @todo This is a hack to make there be no toolbox.
@@ -54,7 +54,7 @@ class CustomProcedures extends React.Component {
             this.mutationRoot.onChangeFn();
             // Keep the block centered on the workspace
             const metrics = this.workspace.getMetrics();
-            const {x, y} = this.mutationRoot.getRelativeToSurfaceXY();
+            const { x, y } = this.mutationRoot.getRelativeToSurfaceXY();
             const dy = (metrics.viewHeight / 2) - (this.mutationRoot.height / 2) - y;
             let dx;
             if (this.props.isRtl) {
@@ -84,7 +84,7 @@ class CustomProcedures extends React.Component {
                         dx = midPoint + (this.mutationRoot.width - metrics.viewWidth);
                     }
                     this.mutationRoot.moveBy(dx, dy);
-                    this.setState({rtlOffset: this.mutationRoot.getRelativeToSurfaceXY().x});
+                    this.setState({ rtlOffset: this.mutationRoot.getRelativeToSurfaceXY().x });
                     return;
                 }
                 if (this.mutationRoot.width > metrics.viewWidth) {
@@ -103,42 +103,42 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.domToMutation(this.props.mutator);
         this.mutationRoot.initSvg();
         this.mutationRoot.render();
-        this.setState({warp: this.mutationRoot.getWarp()});
+        this.setState({ warp: this.mutationRoot.getWarp() });
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
             this.mutationRoot.focusLastEditor_();
         });
     }
-    handleCancel () {
+    handleCancel() {
         this.props.onRequestClose();
     }
-    handleOk () {
+    handleOk() {
         const newMutation = this.mutationRoot ? this.mutationRoot.mutationToDom(true) : null;
         this.props.onRequestClose(newMutation);
     }
-    handleAddLabel () {
+    handleAddLabel() {
         if (this.mutationRoot) {
             this.mutationRoot.addLabelExternal();
         }
     }
-    handleAddBoolean () {
+    handleAddBoolean() {
         if (this.mutationRoot) {
             this.mutationRoot.addBooleanExternal();
         }
     }
-    handleAddTextNumber () {
+    handleAddTextNumber() {
         if (this.mutationRoot) {
             this.mutationRoot.addStringNumberExternal();
         }
     }
-    handleToggleWarp () {
+    handleToggleWarp() {
         if (this.mutationRoot) {
             const newWarp = !this.mutationRoot.getWarp();
             this.mutationRoot.setWarp(newWarp);
-            this.setState({warp: newWarp});
+            this.setState({ warp: newWarp });
         }
     }
-    render () {
+    render() {
         return (
             <CustomProceduresComponent
                 componentRef={this.setBlocks}

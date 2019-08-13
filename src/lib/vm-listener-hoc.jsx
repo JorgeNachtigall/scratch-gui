@@ -13,6 +13,7 @@ import { setRunningState, setTurboState, setStartedState } from '../reducers/vm-
 import { showExtensionAlert } from '../reducers/alerts';
 import { updateMicIndicator } from '../reducers/mic-indicator';
 import elimuAnalyzer from '../lib/elimu-assets/client.js';
+import ScratchBlocks from 'scratch-blocks';
 
 /*
  * Higher Order Component to manage events emitted by the VM
@@ -85,6 +86,7 @@ const vmListenerHOC = function (WrappedComponent) {
                 this.props.onTargetsUpdate(data);
             }
         }
+
         handleKeyDown(e) {
             // Don't capture keys intended for Blockly inputs.
             if (e.target !== document && e.target !== document.body) return;
