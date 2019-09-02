@@ -18,6 +18,7 @@ import { STAGE_DISPLAY_SIZES } from '../lib/layout-constants';
 import DropAreaHOC from '../lib/drop-area-hoc.jsx';
 import DragConstants from '../lib/drag-constants';
 import defineDynamicBlock from '../lib/define-dynamic-block';
+import elimu from '../lib/elimu-assets/client.js';
 
 import { connect } from 'react-redux';
 import { updateToolbox } from '../reducers/toolbox';
@@ -304,6 +305,8 @@ class Blocks extends React.Component {
 
     onBlockChange() {
         console.log(this.ScratchBlocks.Xml.workspaceToDom(this.workspace));
+        window.xml = this.ScratchBlocks.Xml.workspaceToDom(this.workspace);
+        elimu.newState();
     }
 
     onWorkspaceMetricsChange() {

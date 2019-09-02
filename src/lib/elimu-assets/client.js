@@ -2,6 +2,9 @@ import io from "socket.io-client";
 
 let socket = null;
 
+var eventoName = '';
+var state = '';
+
 window.addEventListener("load", () => {
     socket = io("https://elimu-analyzer.herokuapp.com/");
     let codeClass = "";
@@ -13,22 +16,35 @@ window.addEventListener("load", () => {
 
 let eventWrapper = function (eventName) {
     return function () {
-        newState(eventName, this);
-        this.runtime.getBlocksXML();
+        eventoName = eventName;
+        state = this;
     }
 }
 
-let newState = function (event, vm) {
+var callNewState = function (eventName, vm) {
+    let xml = window.xml;
+    newState(eventName, vm, xml);
+}
+
+let newState = function (event, vm, xml) {
     window.vmScratch = vm;
+    let serializer = new XMLSerializer();
+    let newXml = serializer.serializeToString(xml);
+    console.log(newXml);
     if (socket) {
         socket.emit('newState', {
             event,
-            state: vm.toJSON()
+            state: vm.toJSON(),
+            stateXML: newXml
         });
     }
 }
 
 export default {
+    newState() {
+        callNewState(eventoName, state);
+        console.log('newState');
+    },
     bindEvents(vm) {
         vm.on("MONITORS_UPDATE", eventWrapper("MONITORS_UPDATE"));
         vm.on("BLOCK_DRAG_UPDATE", eventWrapper("BLOCK_DRAG_UPDATE"));
